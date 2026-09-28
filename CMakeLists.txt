@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
+if(POLICY CMP0135)
+  cmake_policy(SET CMP0135 NEW)
+endif()
 Project(STLite-ACM-2025)
 include(CTest)
 set(CMAKE_CXX_STANDARD 20)
