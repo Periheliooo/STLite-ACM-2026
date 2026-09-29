@@ -449,6 +449,7 @@ public:
     	data[size_].~T();
 	}
 
+private:
 	void reserve(size_t newcapacity_) {
 		T *newdata = static_cast<T *>(::operator new(newcapacity_ * sizeof(T)));
 		for (size_t i = 0; i < size_; i++) {
