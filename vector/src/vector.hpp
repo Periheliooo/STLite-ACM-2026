@@ -147,8 +147,8 @@ public:
 	public:
 		using difference_type = std::ptrdiff_t;
 		using value_type = T;
-		using pointer = T*;
-		using reference = T&;
+		using pointer = const T*;
+		using reference = const T&;
 		using iterator_category = std::output_iterator_tag;
 
 	private:
@@ -156,9 +156,89 @@ public:
 		const vector<T> *owner;
 		size_t index;
 
+		friend class iterator;
+
 	public:
 		const_iterator(const vector<T> *v, size_t i) : owner(v), index(i) {}
 		
+		const_iterator(const iterator &other)
+        	: owner(other.owner), index(other.index) {}
+		/**
+		 * return a new iterator which pointer n-next elements
+		 * as well as operator-
+		 */
+		const_iterator operator+(const int &n) const
+		{
+			//TODO
+			return const_iterator(owner, index + n);
+		}
+		const_iterator operator-(const int &n) const
+		{
+			//TODO
+			return const_iterator(owner, index - n);
+		}
+		// return the distance between two iterators,
+		// if these two iterators point to different vectors, throw invaild_iterator.
+		int operator-(const const_iterator &rhs) const
+		{
+			//TODO
+			if (owner != rhs.owner)
+				throw invalid_iterator();
+			return static_cast<int>(index) - static_cast<int>(rhs.index);
+		}
+		const_iterator& operator+=(const int &n)
+		{
+			//TODO
+			index += n;
+			return *this;
+		}
+		const_iterator& operator-=(const int &n)
+		{
+			//TODO
+			index -= n;
+			return *this;
+		}
+		/**
+		 * TODO iter++
+		 */
+		const_iterator operator++(int) {
+			index++;
+			return const_iterator(owner, index - 1);
+		}
+		/**
+		 * TODO ++iter
+		 */
+		const_iterator& operator++() {return ((*this) += 1);}
+		/**
+		 * TODO iter--
+		 */
+		const_iterator operator--(int) {
+			index--;
+			return const_iterator(owner, index + 1);
+		}
+		/**
+		 * TODO --iter
+		 */
+		const_iterator& operator--() {return ((*this) -= 1);}
+		/**
+		 * TODO *it
+		 */
+		const T& operator*() const{return owner->data[index];}
+		/**
+		 * a operator to check whether two iterators are same (pointing to the same memory address).
+		 */
+		bool operator==(const iterator &rhs) const {
+			return owner == rhs.owner && index == rhs.index;
+		}
+		bool operator==(const const_iterator &rhs) const {
+			return owner == rhs.owner && index == rhs.index;
+		}
+		/**
+		 * some other operator for iterator.
+		 */
+		bool operator!=(const iterator &rhs) const {return !(*this == rhs);}
+		bool operator!=(const const_iterator &rhs) const {return !(*this == rhs);}
+
 	};
 	/**
 	 * TODO Constructs
